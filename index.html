@@ -203,16 +203,75 @@
             z-index: -3;
         }
 
+        /* 品牌标题 */
+        .brand-title {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 40px;
+            background: linear-gradient(135deg, #00bfff, #00ff9d, #7b68ee, #ff69b4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 191, 255, 0.6);
+            animation: titleGlow 3s ease-in-out infinite alternate, colorShift 8s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .brand-title:hover {
+            transform: scale(1.05) translateY(-5px);
+            text-shadow: 0 0 50px rgba(0, 191, 255, 0.8), 0 0 100px rgba(255, 105, 180, 0.5);
+            filter: drop-shadow(0 0 40px rgba(0, 191, 255, 0.8)) brightness(1.3);
+        }
+
+        .brand-title:active {
+            transform: scale(0.98);
+            filter: drop-shadow(0 0 20px rgba(0, 191, 255, 1)) brightness(1.1);
+        }
+
+        @keyframes titleGlow {
+            0% {
+                filter: drop-shadow(0 0 20px rgba(0, 191, 255, 0.5)) brightness(1);
+            }
+            100% {
+                filter: drop-shadow(0 0 30px rgba(0, 191, 255, 0.8)) brightness(1.2);
+            }
+        }
+
+        @keyframes colorShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
         /* 主容器 */
         .container {
             width: 90%;
             max-width: 800px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             gap: 40px;
             padding: 40px;
             position: relative;
             z-index: 1;
+        }
+
+        /* 卡片容器 */
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            width: 100%;
         }
 
         /* 模型卡片 */
@@ -420,8 +479,236 @@
             background: linear-gradient(90deg, transparent, #ff6666, transparent);
         }
 
-        /* 响应式设计 */
-        @media (max-width: 768px) {
+        /* 主题切换按钮 */
+    .theme-toggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(0, 191, 255, 0.5);
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        z-index: 1000;
+        backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+        transform: scale(1.1);
+        border-color: rgba(0, 191, 255, 0.8);
+        box-shadow: 0 0 20px rgba(0, 191, 255, 0.5);
+    }
+
+    .light-bulb {
+        position: relative;
+        width: 30px;
+        height: 40px;
+    }
+
+    .bulb-body {
+        width: 30px;
+        height: 30px;
+        background: linear-gradient(135deg, #ffffcc, #ffff99);
+        border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        position: relative;
+        box-shadow: 0 0 15px rgba(255, 255, 100, 0.7);
+        transition: all 0.3s ease;
+    }
+
+    .bulb-top {
+        width: 10px;
+        height: 10px;
+        background: #333;
+        position: absolute;
+        top: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-radius: 50% 50% 0 0;
+    }
+
+    .bulb-glow {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 60px;
+        height: 60px;
+        background: radial-gradient(circle, rgba(255, 255, 100, 0.3) 0%, transparent 70%);
+        border-radius: 50%;
+        animation: bulbPulse 2s ease-in-out infinite;
+        transition: all 0.3s ease;
+    }
+
+    @keyframes bulbPulse {
+        0%, 100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.5;
+        }
+        50% {
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 0.8;
+        }
+    }
+
+    /* 深色主题 - 默认 */
+    body.dark-theme {
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+        color: #00ffff;
+    }
+
+    /* 浅色主题 */
+    body.light-theme {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 50%, #f5f7fa 100%);
+        color: #2c3e50;
+    }
+
+    /* 背景网格适配 */
+    body.light-theme::before {
+        background-image: 
+            linear-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    }
+
+    /* 发光球体适配 */
+    body.light-theme::after {
+        background: radial-gradient(circle, rgba(52, 152, 219, 0.2) 0%, transparent 70%);
+    }
+
+    /* Canvas适配 */
+    body.light-theme #particleCanvas {
+        background: radial-gradient(ellipse at center, rgba(245, 247, 250, 0) 0%, rgba(245, 247, 250, 0.8) 70%, rgba(245, 247, 250, 1) 100%);
+    }
+
+    /* 模型卡片适配 */
+    body.light-theme .model-card {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(240, 240, 240, 0.95));
+        border-color: rgba(0, 0, 0, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
+    body.light-theme .model-card:hover {
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 0 30px rgba(52, 152, 219, 0.3), inset 0 0 20px rgba(0, 0, 0, 0.05);
+        border-color: rgba(52, 152, 219, 0.4);
+    }
+
+    body.light-theme .model-card::before {
+        background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.3), transparent);
+    }
+
+    /* 睿朴智算标题适配 */
+    body.light-theme .brand-title {
+        background: linear-gradient(135deg, #3498db, #2ecc71, #9b59b6, #e74c3c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: 0 0 30px rgba(52, 152, 219, 0.6);
+        animation: titleGlowLight 3s ease-in-out infinite alternate, colorShift 8s ease-in-out infinite;
+    }
+
+    @keyframes titleGlowLight {
+        0% {
+            filter: drop-shadow(0 0 20px rgba(52, 152, 219, 0.5)) brightness(1);
+        }
+        100% {
+            filter: drop-shadow(0 0 30px rgba(52, 152, 219, 0.8)) brightness(1.2);
+        }
+    }
+
+    /* 卡片图标适配 */
+    body.light-theme .card-icon {
+        text-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+        filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.3));
+    }
+
+    body.light-theme .model-card:hover .card-icon {
+        filter: drop-shadow(0 0 25px rgba(52, 152, 219, 0.5));
+    }
+
+    /* 按钮适配 */
+    body.light-theme .btn {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(240, 240, 240, 0.2));
+        color: #3498db;
+        border-color: #3498db;
+        box-shadow: 0 0 15px rgba(52, 152, 219, 0.2);
+    }
+
+    body.light-theme .btn:hover {
+        background: linear-gradient(135deg, rgba(52, 152, 219, 0.1), rgba(52, 152, 219, 0.2));
+        box-shadow: 0 0 25px rgba(52, 152, 219, 0.4), 0 0 40px rgba(52, 152, 219, 0.2);
+        border-color: rgba(52, 152, 219, 0.8);
+    }
+
+    body.light-theme .btn::before {
+        background: linear-gradient(90deg, transparent, rgba(52, 152, 219, 0.4), transparent);
+    }
+
+    body.light-theme .btn::after {
+        background: radial-gradient(circle, rgba(52, 152, 219, 0.3) 0%, transparent 70%);
+    }
+
+    /* 农业大模型按钮适配 */
+    body.light-theme .btn-agriculture {
+        background: linear-gradient(135deg, rgba(46, 204, 113, 0.1), rgba(39, 174, 96, 0.1));
+        color: #27ae60;
+        border-color: #27ae60;
+        box-shadow: 0 0 15px rgba(46, 204, 113, 0.2);
+    }
+
+    body.light-theme .btn-agriculture:hover {
+        background: linear-gradient(135deg, rgba(46, 204, 113, 0.2), rgba(39, 174, 96, 0.2));
+        box-shadow: 0 0 25px rgba(46, 204, 113, 0.4), 0 0 40px rgba(46, 204, 113, 0.2);
+        border-color: rgba(39, 174, 96, 0.8);
+    }
+
+    body.light-theme .agriculture-card::before {
+        background: linear-gradient(90deg, transparent, rgba(46, 204, 113, 0.3), transparent);
+    }
+
+    /* 医疗大模型按钮适配 */
+    body.light-theme .btn-medical {
+        background: linear-gradient(135deg, rgba(231, 76, 60, 0.1), rgba(192, 57, 43, 0.1));
+        color: #c0392b;
+        border-color: #c0392b;
+        box-shadow: 0 0 15px rgba(231, 76, 60, 0.2);
+    }
+
+    body.light-theme .btn-medical:hover {
+        background: linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(192, 57, 43, 0.2));
+        box-shadow: 0 0 25px rgba(231, 76, 60, 0.4), 0 0 40px rgba(231, 76, 60, 0.2);
+        border-color: rgba(192, 57, 43, 0.8);
+    }
+
+    body.light-theme .medical-card::before {
+        background: linear-gradient(90deg, transparent, rgba(231, 76, 60, 0.3), transparent);
+    }
+
+    /* 主题切换按钮适配 */
+    body.light-theme .theme-toggle {
+        background: rgba(0, 0, 0, 0.1);
+        border-color: rgba(52, 152, 219, 0.5);
+    }
+
+    body.light-theme .theme-toggle:hover {
+        border-color: rgba(52, 152, 219, 0.8);
+        box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+    }
+
+    body.light-theme .light-bulb .bulb-body {
+        background: linear-gradient(135deg, #2c3e50, #34495e);
+        box-shadow: 0 0 15px rgba(44, 62, 80, 0.7);
+    }
+
+    body.light-theme .light-bulb .bulb-glow {
+        background: radial-gradient(circle, rgba(44, 62, 80, 0.3) 0%, transparent 70%);
+    }
+
+    /* 响应式设计 */
+    @media (max-width: 768px) {
             .container {
                 grid-template-columns: 1fr;
                 gap: 30px;
@@ -447,17 +734,32 @@
     <!-- 粒子背景 -->
     <div class="particles" id="particles"></div>
     
-    <div class="container">
-        <!-- 农业大模型卡片 -->
-        <div class="model-card agriculture-card">
-            <div class="card-icon">🌾</div>
-            <a href="https://www.tgkwai.com/app" class="btn btn-agriculture" target="_blank">农业大模型</a>
+    <!-- 主题切换按钮 -->
+    <button class="theme-toggle" id="themeToggle" aria-label="切换主题">
+        <div class="light-bulb">
+            <div class="bulb-body"></div>
+            <div class="bulb-top"></div>
+            <div class="bulb-glow"></div>
         </div>
+    </button>
+    
+    <div class="container">
+        <!-- 品牌标题 -->
+        <h1 class="brand-title">睿朴智算</h1>
         
-        <!-- 医疗大模型卡片 -->
-        <div class="model-card medical-card">
-            <div class="card-icon">🏥</div>
-            <a href="https://agent.xfyun.cn/chat?sharekey=61318471b2314aedd899dc874a92dc4d&botId=2060714" class="btn btn-medical" target="_blank">医疗大模型</a>
+        <!-- 卡片容器 -->
+        <div class="cards-container">
+            <!-- 农业大模型卡片 -->
+            <div class="model-card agriculture-card">
+                <div class="card-icon">🌾</div>
+                <a href="https://www.tgkwai.com/app" class="btn btn-agriculture" target="_blank">农业大模型</a>
+            </div>
+            
+            <!-- 医疗大模型卡片 -->
+            <div class="model-card medical-card">
+                <div class="card-icon">🏥</div>
+                <a href="https://agent.xfyun.cn/chat?sharekey=61318471b2314aedd899dc874a92dc4d&botId=2060714" class="btn btn-medical" target="_blank">医疗大模型</a>
+            </div>
         </div>
     </div>
 
@@ -671,7 +973,33 @@
             // 初始化并启动动画
             initParticles();
             animate();
+        
+            // 主题切换功能
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
             
+            // 检查本地存储中的主题偏好
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                body.classList.add(savedTheme);
+            } else {
+                // 默认使用深色主题
+                body.classList.add('dark-theme');
+            }
+            
+            // 主题切换事件
+            themeToggle.addEventListener('click', function() {
+                if (body.classList.contains('dark-theme')) {
+                    body.classList.remove('dark-theme');
+                    body.classList.add('light-theme');
+                    localStorage.setItem('theme', 'light-theme');
+                } else {
+                    body.classList.remove('light-theme');
+                    body.classList.add('dark-theme');
+                    localStorage.setItem('theme', 'dark-theme');
+                }
+            });
+              
             // 卡片交互增强
             const cards = document.querySelectorAll('.model-card');
             cards.forEach(card => {
